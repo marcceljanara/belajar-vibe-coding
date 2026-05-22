@@ -5,7 +5,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
   .post('/users', async ({ body, set }) => {
     try {
       const result = await registerUser(body);
-      return result;
+      return { data: result };
     } catch (error: any) {
       if (error.message === 'email sudah terdaftar') {
         set.status = 400;
@@ -24,7 +24,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
   .post('/users/login', async ({ body, set }) => {
     try {
       const result = await loginUser(body);
-      return result;
+      return { data: result };
     } catch (error: any) {
       if (error.message === 'email atau password salah') {
         set.status = 400;
@@ -54,7 +54,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
 
     try {
       const result = await getCurrentUser(token);
-      return result;
+      return { data: result };
     } catch (error: any) {
       if (error.message === 'Unauthorized') {
         set.status = 401;

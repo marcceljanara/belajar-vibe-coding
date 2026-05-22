@@ -29,7 +29,7 @@ export async function registerUser(payload: any) {
     password: hashedPassword,
   });
 
-  return { data: 'OK' };
+  return 'OK';
 }
 
 export async function loginUser(payload: any) {
@@ -66,7 +66,7 @@ export async function loginUser(payload: any) {
     userId: user.id,
   });
 
-  return { data: token };
+  return token;
 }
 
 export async function getCurrentUser(token: string) {
@@ -91,5 +91,5 @@ export async function getCurrentUser(token: string) {
     throw new Error('Unauthorized');
   }
 
-  return { data: user };
+  return user;
 }

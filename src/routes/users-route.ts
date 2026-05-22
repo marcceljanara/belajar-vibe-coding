@@ -21,6 +21,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       const result = await registerUser(body);
       return { data: result };
     } catch (error: any) {
+      console.error('[Register User Error]:', error);
       if (error.message === 'email sudah terdaftar') {
         set.status = 400;
         return { error: 'email sudah terdaftar' };
@@ -30,9 +31,9 @@ export const usersRoute = new Elysia({ prefix: '/api' })
     }
   }, {
     body: t.Object({
-      name: t.String(),
-      email: t.String(),
-      password: t.String(),
+      name: t.String({ maxLength: 255 }),
+      email: t.String({ maxLength: 255 }),
+      password: t.String({ maxLength: 255 }),
     }),
   })
   .post('/users/login', async ({ body, set }) => {
@@ -40,6 +41,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       const result = await loginUser(body);
       return { data: result };
     } catch (error: any) {
+      console.error('[Login User Error]:', error);
       if (error.message === 'email atau password salah') {
         set.status = 400;
         return { error: 'email atau password salah' };
@@ -49,8 +51,8 @@ export const usersRoute = new Elysia({ prefix: '/api' })
     }
   }, {
     body: t.Object({
-      email: t.String(),
-      password: t.String(),
+      email: t.String({ maxLength: 255 }),
+      password: t.String({ maxLength: 255 }),
     }),
   })
   .get('/users/current', async ({ headers, set }) => {
@@ -59,6 +61,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       const result = await getCurrentUser(token);
       return { data: result };
     } catch (error: any) {
+      console.error('[Get Current User Error]:', error);
       if (error.message === 'Unauthorized') {
         set.status = 401;
         return { error: 'Unauthorized' };
@@ -73,6 +76,7 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       const result = await logoutUser(token);
       return { data: result };
     } catch (error: any) {
+      console.error('[Logout User Error]:', error);
       if (error.message === 'Unauthorized') {
         set.status = 401;
         return { error: 'Unauthorized' };

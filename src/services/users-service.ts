@@ -93,3 +93,24 @@ export async function getCurrentUser(token: string) {
 
   return user;
 }
+
+export async function logoutUser(token: string) {
+  const result = await db
+    .select()
+    .from(sessions)
+    .where(eq(sessions.token, token))
+    .limit(1);
+
+  if (result.length === 0) {
+    throw new Error('Unauthorized');
+  }
+
+  const session = result[0];
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+
+  await db.delete(sessions).where(eq(sessions.token, token));
+
+  return 'OK';
+}

@@ -35,6 +35,11 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       email: t.String({ maxLength: 255 }),
       password: t.String({ maxLength: 255 }),
     }),
+    detail: {
+      summary: 'Registrasi Pengguna',
+      description: 'Mendaftarkan akun pengguna baru ke sistem dengan nama, email, dan password.',
+      tags: ['Authentication']
+    }
   })
   .post('/users/login', async ({ body, set }) => {
     try {
@@ -54,6 +59,11 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       email: t.String({ maxLength: 255 }),
       password: t.String({ maxLength: 255 }),
     }),
+    detail: {
+      summary: 'Login Pengguna',
+      description: 'Endpoint untuk melakukan autentikasi login pengguna dan mengembalikan Token sesi.',
+      tags: ['Authentication']
+    }
   })
   .get('/users/current', async ({ headers, set }) => {
     try {
@@ -69,6 +79,17 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       set.status = 500;
       return { error: 'Internal Server Error' };
     }
+  }, {
+    detail: {
+      summary: 'Dapatkan Pengguna Saat Ini',
+      description: 'Mengambil informasi profil dari pengguna yang saat ini sedang login menggunakan Token sesi.',
+      tags: ['Users'],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ]
+    }
   })
   .delete('/users/logout', async ({ headers, set }) => {
     try {
@@ -83,5 +104,16 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       }
       set.status = 500;
       return { error: 'Internal Server Error' };
+    }
+  }, {
+    detail: {
+      summary: 'Logout Pengguna',
+      description: 'Endpoint untuk menghapus sesi login aktif (invalidation Token) bagi pengguna saat ini.',
+      tags: ['Authentication'],
+      security: [
+        {
+          BearerAuth: []
+        }
+      ]
     }
   });

@@ -35,6 +35,17 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       email: t.String({ maxLength: 255 }),
       password: t.String({ maxLength: 255 }),
     }),
+    response: {
+      200: t.Object({
+        data: t.String({ default: 'OK' })
+      }),
+      400: t.Object({
+        error: t.String()
+      }),
+      500: t.Object({
+        error: t.String()
+      })
+    },
     detail: {
       summary: 'Registrasi Pengguna',
       description: 'Mendaftarkan akun pengguna baru ke sistem dengan nama, email, dan password.',
@@ -59,6 +70,17 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       email: t.String({ maxLength: 255 }),
       password: t.String({ maxLength: 255 }),
     }),
+    response: {
+      200: t.Object({
+        data: t.String({ format: 'uuid', description: 'Token sesi baru yang dihasilkan' })
+      }),
+      400: t.Object({
+        error: t.String()
+      }),
+      500: t.Object({
+        error: t.String()
+      })
+    },
     detail: {
       summary: 'Login Pengguna',
       description: 'Endpoint untuk melakukan autentikasi login pengguna dan mengembalikan Token sesi.',
@@ -80,6 +102,22 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       return { error: 'Internal Server Error' };
     }
   }, {
+    response: {
+      200: t.Object({
+        data: t.Object({
+          id: t.Number(),
+          name: t.String(),
+          email: t.String(),
+          createdAt: t.Any()
+        })
+      }),
+      401: t.Object({
+        error: t.String()
+      }),
+      500: t.Object({
+        error: t.String()
+      })
+    },
     detail: {
       summary: 'Dapatkan Pengguna Saat Ini',
       description: 'Mengambil informasi profil dari pengguna yang saat ini sedang login menggunakan Token sesi.',
@@ -106,6 +144,17 @@ export const usersRoute = new Elysia({ prefix: '/api' })
       return { error: 'Internal Server Error' };
     }
   }, {
+    response: {
+      200: t.Object({
+        data: t.String({ default: 'OK' })
+      }),
+      401: t.Object({
+        error: t.String()
+      }),
+      500: t.Object({
+        error: t.String()
+      })
+    },
     detail: {
       summary: 'Logout Pengguna',
       description: 'Endpoint untuk menghapus sesi login aktif (invalidation Token) bagi pengguna saat ini.',

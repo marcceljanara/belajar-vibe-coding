@@ -1,4 +1,4 @@
-import { Elysia } from 'elysia';
+import { Elysia, t } from 'elysia';
 import { swagger } from '@elysiajs/swagger';
 import { usersRoute } from './routes/users-route';
 
@@ -26,6 +26,12 @@ export const app = new Elysia()
     message: 'Hello World from Elysia + Bun!',
     status: 'success',
   }), {
+    response: {
+      200: t.Object({
+        message: t.String(),
+        status: t.String()
+      })
+    },
     detail: {
       summary: 'Root Endpoint',
       description: 'Menampilkan pesan selamat datang dari server API Elysia + Bun.',
@@ -46,6 +52,25 @@ export const app = new Elysia()
       };
     }
   }, {
+    response: {
+      200: t.Union([
+        t.Object({
+          status: t.Literal('success'),
+          data: t.Array(t.Object({
+            id: t.Number(),
+            name: t.String(),
+            email: t.String(),
+            password: t.String(),
+            createdAt: t.Any()
+          }))
+        }),
+        t.Object({
+          status: t.Literal('error'),
+          message: t.String(),
+          details: t.Optional(t.String())
+        })
+      ])
+    },
     detail: {
       summary: 'Dapatkan Semua Pengguna',
       description: 'Endpoint internal untuk mengambil daftar seluruh pengguna yang terdaftar di database.',
